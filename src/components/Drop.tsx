@@ -1,4 +1,6 @@
-import React, { useCallback, useMemo } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import React, { useCallback, useMemo, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 
 const baseStyle = {
@@ -28,7 +30,10 @@ const acceptStyle = {
 const rejectStyle = {
   borderColor: "#ff1744",
 };
+
 function Drop() {
+  const dropzoneRef = useRef<HTMLElement | null>(null);
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // TODO: csv가 아닌 파일 드랍시 gsap으로 애니메이션
     if (acceptedFiles.length > 0) {
@@ -54,8 +59,12 @@ function Drop() {
     [isFocused, isDragAccept, isDragReject]
   );
 
+  useGSAP(() => {
+    gsap.to(".container", { x: 100 });
+  }, []);
+
   return (
-    <section className="container">
+    <section ref={dropzoneRef} className="container">
       <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
