@@ -63,8 +63,11 @@ function Drop() {
   );
 
   useGSAP(() => {
-    gsap.to(".container", { x: 100 });
-  }, []);
+    // TODO: csv파일이 아니면 진동피드백
+    if (isDragReject === true) {
+      gsap.fromTo(".container", { x: 10 }, { x: -10 });
+    }
+  }, [isDragReject]);
 
   return (
     <section ref={dropzoneRef} className="container">
