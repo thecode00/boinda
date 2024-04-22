@@ -2,6 +2,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import React, { useCallback, useMemo, useRef } from "react";
 import { useDropzone } from "react-dropzone";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 const baseStyle = {
   flex: 1,
@@ -33,11 +34,13 @@ const rejectStyle = {
 
 function Drop() {
   const dropzoneRef = useRef<HTMLElement | null>(null);
+  const navigate = useNavigate();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // TODO: csv가 아닌 파일 드랍시 gsap으로 애니메이션
     if (acceptedFiles.length > 0) {
       console.log(acceptedFiles);
+      navigate(`/data/${acceptedFiles[0].name}`);
     }
   }, []);
 
