@@ -11,13 +11,18 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.0",
+    "@types/d3": "^7.4.3",
+    "@types/papaparse": "^5.3.14",
     "bootstrap": "^5.3.3",
+    "d3": "^7.9.0",
     "gsap": "^3.12.5",
+    "papaparse": "^5.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-pro-sidebar": "^1.1.0",
-    "react-router-dom": "^6.22.3"
+    "react-router-dom": "^6.22.3",
+    "recoil": "^0.7.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.79",
