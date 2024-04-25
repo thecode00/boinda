@@ -3,6 +3,8 @@ import gsap from "gsap";
 import React, { useCallback, useMemo, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate, useNavigation } from "react-router-dom";
+import * as d3 from "d3";
+import { atom, useRecoilState } from "recoil";
 
 const baseStyle = {
   flex: 1,
@@ -32,15 +34,32 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
+interface csvStateInterface {
+  key: string;
+  default: File;
+}
+
+const csvState = atom({
+  key: "csvState",
+  default: null,
+});
+
 function Drop() {
   const dropzoneRef = useRef<HTMLElement | null>(null);
+  const [csv, setCsv] = useRecoilState(csvState);
   const navigate = useNavigate();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // TODO: csv가 아닌 파일 드랍시 gsap으로 애니메이션
     if (acceptedFiles.length > 0) {
-      console.log(acceptedFiles);
-      navigate(`/data/${acceptedFiles[0].name}`);
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const result = e.target!.result;
+        setCsv(result);
+        navigate(`/data/${acceptedFiles[0].name}`);
+      };
+      reader.readAsText(acceptedFiles[0]);
     }
   }, []);
 
@@ -52,6 +71,7 @@ function Drop() {
       },
     });
 
+  // TODO: 스타일 개선
   const style = useMemo(
     () => ({
       ...baseStyle,
