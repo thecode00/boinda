@@ -1,11 +1,10 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import LinePlot from "../components/LinePlot";
 
 function CsvPage() {
-  const params = useParams();
   return (
     <div>
-      CsvPage<div>{params.csvString}</div>
+      <LinePlot />
     </div>
   );
 }
