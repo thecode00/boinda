@@ -34,11 +34,7 @@ const rejectStyle = {
   borderColor: "#ff1744",
 };
 
-interface IContentTypes {
-  file: d3.DSVRowArray<string> | null;
-}
-
-export const csvState = atom<IContentTypes>({
+export const csvState = atom<{}>({
   key: "csvState",
   default: { file: null },
 });
@@ -52,11 +48,26 @@ function Drop() {
     // TODO: csv가 아닌 파일 드랍시 gsap으로 애니메이션
     if (acceptedFiles.length > 0) {
       const reader = new FileReader();
-
+      const dataEvent = new CustomEvent("data-to-pyscript", {
+        detail: { file: acceptedFiles[0] },
+      });
+      document.dispatchEvent(dataEvent);
       reader.onload = (e) => {
         const result = e.target!.result;
 
-        setCsv(d3.csvParse(result));
+        setCsv(
+          d3.csvParse(result, (d) => ({
+            "cap-diameter": +d["cap-diameter"],
+            "cap-shape": +d["cap-shape"],
+            "gill-attachment": +d["gill-attachment"],
+            "gill-color": +d["gill-color"],
+            "stem-height": +d["stem-height"],
+            "stem-width": +d["stem-width"],
+            "stem-color": +d["stem-color"],
+            season: +d["season"],
+            class: +d["class"],
+          }))
+        );
         navigate(`/data/${acceptedFiles[0].name}`);
       };
       reader.readAsText(acceptedFiles[0]);
