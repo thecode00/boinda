@@ -5,6 +5,7 @@ import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import * as d3 from "d3";
 import { atom, useSetRecoilState } from "recoil";
+import addPyscript from "../logic/addPyscript";
 
 const baseStyle = {
   flex: 1,
@@ -43,15 +44,15 @@ function Drop() {
   const dropzoneRef = useRef<HTMLElement | null>(null);
   const setCsv = useSetRecoilState(csvState);
   const navigate = useNavigate();
-
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // TODO: csv가 아닌 파일 드랍시 gsap으로 애니메이션
     if (acceptedFiles.length > 0) {
-      const reader = new FileReader();
+      addPyscript();
       const dataEvent = new CustomEvent("data-to-pyscript", {
         detail: { file: acceptedFiles[0] },
       });
       document.dispatchEvent(dataEvent);
+      const reader = new FileReader();
       reader.onload = (e) => {
         const result = e.target!.result;
 
