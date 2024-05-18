@@ -1,14 +1,26 @@
 
-import pandas as pd
-import asyncio
 import js
 import io
-from pyodide.ffi import create_proxy, JsProxy
-import micropip
+from pyodide.ffi import create_proxy
+import pyodide_js
+
 is_package_downloaded = False
 
 
-def get_data(event):
+async def install_packages():  # 필요한 패키지를 동적으로 다운로드
+    global pd
+    await pyodide_js.loadPackage("micropip")
+    import micropip
+    await micropip.install(['pandas'])
+    import pandas as pd
+    print('Packages installed!')
+
+
+async def get_data(event):
+    global is_package_downloaded
+    if not is_package_downloaded:
+        await install_packages()
+        is_package_downloaded = True
 
     file = event.detail.file
 
@@ -22,10 +34,10 @@ def get_data(event):
     def process_csv(data):
         # pandas를 사용하여 CSV 데이터 읽기
         df = pd.read_csv(io.StringIO(data))
-        print(df)
 
 
 get_data_proxy = create_proxy(get_data)
+
 
 js.document.addEventListener("data-to-pyscript", get_data_proxy)
 print("Event ready")
