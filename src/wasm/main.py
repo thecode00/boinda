@@ -9,6 +9,11 @@ is_package_downloaded = False
 df = None
 
 
+def data_to_js(data):  # 데이터는 항상 문자열로
+    print("data_to_pyscript", data)
+    js.jsStore._notify("test", data)
+
+
 async def install_packages():  # 필요한 패키지를 동적으로 다운로드
     global pd
     await pyodide_js.loadPackage("micropip")
@@ -42,13 +47,14 @@ def process_csv(data):
 
 
 test = {
-    "file": get_data
+    "file": get_data,
+    "get": data_to_js("test"),
 }
 
 
 def store(data):  # 자바스크립트와의 통신을 담당하는 함수
-    if data.key in test:
-        test[data.key](data)
+    if data.detail.key in test:
+        test[data.detail.key](data)
 
 
 get_data_proxy = create_proxy(store)

@@ -1,3 +1,5 @@
+// Singleton
+
 class Store {
   private subscribers: any = {};
 
@@ -5,7 +7,7 @@ class Store {
 
   dataToWasm(data: any) {
     const dataEvent = new CustomEvent("data-to-pyscript", {
-      detail: { data },
+      detail: { data, key: "file" },
     });
     document.dispatchEvent(dataEvent);
   }
@@ -20,9 +22,10 @@ class Store {
     );
   }
 
-  notify(key: string) {
+  _notify(key: string, data: any) {
+    console.log(data);
     this.subscribers[key].map((call) => {
-      call();
+      call(data);
     });
   }
 }

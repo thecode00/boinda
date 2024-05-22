@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import CsvPage from "./pages/CsvPage";
 import Root from "./pages/Root";
+import store from "./logic/store";
 const browserRouter = createBrowserRouter([
   {
     path: "/",
@@ -25,6 +26,7 @@ const browserRouter = createBrowserRouter([
 ]);
 
 function App() {
+  globalThis.jsStore = store;
   return <RouterProvider router={browserRouter}></RouterProvider>;
 }
 
