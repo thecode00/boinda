@@ -4,8 +4,8 @@ import React, { useCallback, useMemo, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import * as d3 from "d3";
-import { atom, useSetRecoilState } from "recoil";
-import addPyscript from "../logic/addPyscript";
+import { atom, useRecoilState, useSetRecoilState } from "recoil";
+import store from "../logic/store";
 
 const baseStyle = {
   flex: 1,
@@ -42,36 +42,13 @@ export const csvState = atom<{}>({
 
 function Drop() {
   const dropzoneRef = useRef<HTMLElement | null>(null);
-  const setCsv = useSetRecoilState(csvState);
   const navigate = useNavigate();
+
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // TODO: csv가 아닌 파일 드랍시 gsap으로 애니메이션
     if (acceptedFiles.length > 0) {
-      addPyscript();
-      const dataEvent = new CustomEvent("data-to-pyscript", {
-        detail: { file: acceptedFiles[0] },
-      });
-      document.dispatchEvent(dataEvent);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target!.result;
-
-        setCsv(
-          d3.csvParse(result, (d) => ({
-            "cap-diameter": +d["cap-diameter"],
-            "cap-shape": +d["cap-shape"],
-            "gill-attachment": +d["gill-attachment"],
-            "gill-color": +d["gill-color"],
-            "stem-height": +d["stem-height"],
-            "stem-width": +d["stem-width"],
-            "stem-color": +d["stem-color"],
-            season: +d["season"],
-            class: +d["class"],
-          }))
-        );
-        navigate(`/data/${acceptedFiles[0].name}`);
-      };
-      reader.readAsText(acceptedFiles[0]);
+      store.dataToWasm(acceptedFiles[0]);
+      navigate(`/data/${acceptedFiles[0].name}`);
     }
   }, []);
 
