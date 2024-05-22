@@ -1,13 +1,13 @@
 // Singleton
-
+import * as d3 from "d3";
 class Store {
   private subscribers: any = {};
 
   constructor() {}
 
-  dataToWasm(data: any) {
+  requestToPyscript(data: any, key: string) {
     const dataEvent = new CustomEvent("data-to-pyscript", {
-      detail: { data, key: "file" },
+      detail: { data, key },
     });
     document.dispatchEvent(dataEvent);
   }
@@ -23,10 +23,13 @@ class Store {
   }
 
   _notify(key: string, data: any) {
+    // d3.csvParse(data);
     console.log(data);
-    this.subscribers[key].map((call) => {
-      call(data);
-    });
+    if (this.subscribers[key]) {
+      this.subscribers[key].map((call) => {
+        call(data);
+      });
+    }
   }
 }
 

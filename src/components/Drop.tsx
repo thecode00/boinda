@@ -47,7 +47,8 @@ function Drop() {
   const onDrop = useCallback((acceptedFiles: File[]) => {
     // TODO: csv가 아닌 파일 드랍시 gsap으로 애니메이션
     if (acceptedFiles.length > 0) {
-      store.dataToWasm(acceptedFiles[0]);
+      store.requestToPyscript(acceptedFiles[0], "file");
+      store.requestToPyscript(null, "getType");
       navigate(`/data/${acceptedFiles[0].name}`);
     }
   }, []);

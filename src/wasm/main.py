@@ -1,4 +1,5 @@
 
+import string
 import time
 import js
 import io
@@ -9,7 +10,11 @@ is_package_downloaded = False
 df = None
 
 
-def data_to_js(data):  # 데이터는 항상 문자열로
+def dataframe_to_csv(data):
+    return df.to_csv(data)
+
+
+def data_to_js(data, key: string):  # 데이터는 항상 문자열로
     print("data_to_pyscript", data)
     js.jsStore._notify("test", data)
 
@@ -46,15 +51,22 @@ def process_csv(data):
     df = pd.read_csv(io.StringIO(data))
 
 
-test = {
+def get_csv_type_info():
+    if not df:
+        return ""
+
+    return dataframe_to_csv(df.info())
+
+
+end_point = {
     "file": get_data,
-    "get": data_to_js("test"),
+    "getType": data_to_js(get_csv_type_info(), "type"),
 }
 
 
 def store(data):  # 자바스크립트와의 통신을 담당하는 함수
-    if data.detail.key in test:
-        test[data.detail.key](data)
+    if data.detail.key in end_point:
+        end_point[data.detail.key](data)
 
 
 get_data_proxy = create_proxy(store)
