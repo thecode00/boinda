@@ -41,7 +41,17 @@ def process_csv(data):
     df = pd.read_csv(io.StringIO(data))
 
 
-get_data_proxy = create_proxy(get_data)
+test = {
+    "file": get_data
+}
+
+
+def store(data):  # 자바스크립트와의 통신을 담당하는 함수
+    if data.key in test:
+        test[data.key](data)
+
+
+get_data_proxy = create_proxy(store)
 
 
 js.document.addEventListener("data-to-pyscript", get_data_proxy)
