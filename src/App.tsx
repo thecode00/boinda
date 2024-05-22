@@ -7,8 +7,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import CsvPage from "./pages/CsvPage";
 import Root from "./pages/Root";
-import { useEffect } from "react";
-
 const browserRouter = createBrowserRouter([
   {
     path: "/",
