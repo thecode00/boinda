@@ -22,9 +22,12 @@ class Store {
     );
   }
 
+  getDataFromPyscript(key: string, data: any) {
+    console.log(key, data);
+    this._notify(key, data);
+  }
+
   _notify(key: string, data: any) {
-    // d3.csvParse(data);
-    console.log(data);
     if (this.subscribers[key]) {
       this.subscribers[key].map((call) => {
         call(data);
