@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import store from "../../logic/store";
+import store from "../../store/store";
 
 function Chart() {
   const [csvData, setCsvData] = useState(null);

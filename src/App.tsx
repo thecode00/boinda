@@ -7,7 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import CsvPage from "./pages/CsvPage";
 import Root from "./pages/Root";
-import store from "./logic/store";
+import store from "./store/store";
 const browserRouter = createBrowserRouter([
   {
     path: "/",

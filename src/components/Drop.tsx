@@ -3,9 +3,8 @@ import gsap from "gsap";
 import React, { useCallback, useMemo, useRef } from "react";
 import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
-import * as d3 from "d3";
 import { atom, useRecoilState, useSetRecoilState } from "recoil";
-import store from "../logic/store";
+import store from "../store/store";
 
 const baseStyle = {
   flex: 1,
@@ -48,7 +47,6 @@ function Drop() {
     // TODO: csv가 아닌 파일 드랍시 gsap으로 애니메이션
     if (acceptedFiles.length > 0) {
       store.requestToPyscript(acceptedFiles[0], "file");
-      store.requestToPyscript(null, "getType");
       navigate(`/data/${acceptedFiles[0].name}`);
     }
   }, []);
