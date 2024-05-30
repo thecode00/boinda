@@ -1,5 +1,4 @@
 // Singleton
-import * as d3 from "d3";
 class Store {
   private subscribers: any = {};
 
@@ -13,6 +12,9 @@ class Store {
   }
 
   subscribe(key: string, callback: any) {
+    if (!this.subscribers[key]) {
+      this.subscribers[key] = [];
+    }
     this.subscribers[key].push(callback);
   }
 
